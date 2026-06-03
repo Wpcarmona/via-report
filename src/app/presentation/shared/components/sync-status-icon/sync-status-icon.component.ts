@@ -1,15 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
+import { IonIcon } from '@ionic/angular/standalone';
+import { SyncStatus } from 'src/app/domain/entities/sync-status.enum';
 
 @Component({
   selector: 'app-sync-status-icon',
   templateUrl: './sync-status-icon.component.html',
   styleUrls: ['./sync-status-icon.component.scss'],
   standalone: true,
+  imports: [IonIcon],
 })
-export class SyncStatusIconComponent  implements OnInit {
+export class SyncStatusIconComponent {
 
-  constructor() { }
+  status = input<string>('');
 
-  ngOnInit() {}
-
+  icon = computed(() => {
+    switch (this.status()) {
+      case SyncStatus.PENDING:
+        return 'cloud-outline';
+      case SyncStatus.SYNCING:
+        return 'sync-outline';
+      case SyncStatus.SYNCED:
+        return 'checkmark-circle-outline';
+      case SyncStatus.ERROR:
+        return 'alert-circle-outline';
+      default:
+        return 'help-outline';
+    }
+  })
+  
 }
