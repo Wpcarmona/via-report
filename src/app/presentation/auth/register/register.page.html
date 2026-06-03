@@ -1,13 +1,45 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>register</ion-title>
+    <ion-title>Registrarse</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">register</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <form [formGroup]="registerForm" (ngSubmit)="register()">
+    <ion-item>
+      <ion-input
+        type="email"
+        formControlName="email"
+        label="Correo"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input
+        type="password"
+        formControlName="password"
+        label="Contraseña"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input
+        type="text"
+        formControlName="fullName"
+        label="Nombre Completo"
+      ></ion-input>
+    </ion-item>
+
+    @if (errorMessage() != null) {
+    <p class="error-message">{{ errorMessage() }}</p>
+    }
+
+    <ion-button type="submit" expand="block" [disabled]="isLoading()">
+      Registrarse
+    </ion-button>
+
+    <ion-button fill="clear" routerLink="/login">
+      ¿Ya tienes cuenta? Inicia sesión
+    </ion-button>
+  </form>
 </ion-content>

@@ -1,13 +1,10 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
   {
-    path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
-  },
-  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
   {
@@ -20,14 +17,17 @@ export const routes: Routes = [
   },
   {
     path: 'report-list',
-    loadComponent: () => import('./presentation/reports/report-list/report-list.page').then( m => m.ReportListPage)
+    loadComponent: () => import('./presentation/reports/report-list/report-list.page').then( m => m.ReportListPage),
+    canActivate: [authGuard]
   },
   {
     path: 'report-create',
-    loadComponent: () => import('./presentation/reports/report-create/report-create.page').then( m => m.ReportCreatePage)
+    loadComponent: () => import('./presentation/reports/report-create/report-create.page').then( m => m.ReportCreatePage),
+    canActivate: [authGuard]
   },
   {
-    path: 'report-detail',
-    loadComponent: () => import('./presentation/reports/report-detail/report-detail.page').then( m => m.ReportDetailPage)
+    path: 'report-detail/:id',
+    loadComponent: () => import('./presentation/reports/report-detail/report-detail.page').then( m => m.ReportDetailPage),
+    canActivate: [authGuard]
   },
 ];

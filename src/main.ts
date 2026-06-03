@@ -4,11 +4,26 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import {provideFirestore, getFirestore} from '@angular/fire/firestore';
+import { firebaseConfig } from './environments/environment';
+import { AuthRepository } from './app/domain/repositories/auth.repository';
+import { AuthRepositoryImpl } from './app/infrastructure/repositories/auth.repository.impl';
+import { ReportRepository } from './app/domain/repositories/report.repository';
+import { ReportRepositoryImpl } from './app/infrastructure/repositories/report.repository.impl';
+import { provideHttpClient } from '@angular/common/http';
 
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: AuthRepository, useClass: AuthRepositoryImpl },
+    { provide: ReportRepository, useClass: ReportRepositoryImpl },
     provideIonicAngular(),
+    provideHttpClient(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore())
   ],
 });
