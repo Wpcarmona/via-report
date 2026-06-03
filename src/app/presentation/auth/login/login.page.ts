@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
@@ -12,7 +12,8 @@ import {
 } from '@ionic/angular/standalone';
 import { LoginUseCase } from 'src/app/domain/use-cases/login.use-case';
 import { Router } from '@angular/router';
-import { IonRouterLink } from '@ionic/angular/standalone';
+import { RouterLink } from '@angular/router';
+import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -28,14 +29,16 @@ import { IonRouterLink } from '@ionic/angular/standalone';
     IonInput,
     IonItem,
     CommonModule,
-    IonRouterLink,
     ReactiveFormsModule,
+    RouterLink,
   ],
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
+  
   private loginUseCase = inject(LoginUseCase);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+  private auth = inject(Auth);
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
 
@@ -43,6 +46,13 @@ export class LoginPage {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
+
+  async ngOnInit() {
+    await this.auth.authStateReady();
+    if (this.auth.currentUser) {
+      this.router.navigate(['/report-list']);
+    }
+  }
 
   async login() {
     if (this.loginForm.invalid) return;

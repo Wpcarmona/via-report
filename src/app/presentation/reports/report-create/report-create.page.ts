@@ -22,6 +22,7 @@ import { Auth } from '@angular/fire/auth';
 import { SyncStatus } from 'src/app/domain/entities/sync-status.enum';
 import { Report } from 'src/app/domain/entities/report.entity';
 import { Geolocation } from '@capacitor/geolocation';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-report-create',
@@ -42,6 +43,7 @@ import { Geolocation } from '@capacitor/geolocation';
     IonButton,
     IonInput,
     IonTextarea,
+    RouterLink,
   ],
 })
 export class ReportCreatePage implements OnInit {
@@ -70,11 +72,23 @@ export class ReportCreatePage implements OnInit {
   }
 
   async captureLocation(): Promise<void> {
-    const coordinates = await Geolocation.getCurrentPosition();
-    this.latitude.set(coordinates.coords.latitude);
-    this.longitude.set(coordinates.coords.longitude);
-    if (this.networkService.online()) {
-      await this.loadWeather();
+    try {
+      const coordinates = await Geolocation.getCurrentPosition({
+        timeout: 15000,
+        enableHighAccuracy: false,
+      });
+      this.latitude.set(coordinates.coords.latitude);
+      this.longitude.set(coordinates.coords.longitude);
+      if (this.networkService.online()) {
+        await this.loadWeather();
+      }
+    } catch (error) {
+      console.error('Error obteniendo ubicación', error);
+      this.latitude.set(6.2442);
+      this.longitude.set(-75.5812);
+      if (this.networkService.online()) {
+        await this.loadWeather();
+      }
     }
   }
 
@@ -117,6 +131,7 @@ export class ReportCreatePage implements OnInit {
       this.router.navigate(['/report-list']);
     } catch (error) {
       this.errorMessage.set('Error al crear el reporte. Intente nuevamente.');
+      console.log(error);
     } finally {
       this.isLoading.set(false);
     }

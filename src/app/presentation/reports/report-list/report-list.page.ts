@@ -1,21 +1,47 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonSpinner, IonList, IonItem, IonLabel, IonFab, IonFabButton, IonIcon } from '@ionic/angular/standalone';
+import {
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonSpinner,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonFab,
+  IonFabButton,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { GetReportsUseCase } from 'src/app/domain/use-cases/get-reports.use-case';
 import { LogoutUseCase } from 'src/app/domain/use-cases/logout.use-case';
 import { Router } from '@angular/router';
 import { NetworkService } from 'src/app/core/services/network';
 import { Auth } from '@angular/fire/auth';
 import { Report } from 'src/app/domain/entities/report.entity';
-  import { RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { SyncStatusIconComponent } from '../../shared/components/sync-status-icon/sync-status-icon.component';
+import { addIcons } from 'ionicons';
+import { add } from 'ionicons/icons';
+ import { ViewWillEnter } from '@ionic/angular/standalone';
+import { SyncService } from 'src/app/core/services/sync';
 
 @Component({
   selector: 'app-report-list',
   templateUrl: './report-list.page.html',
   styleUrls: ['./report-list.page.scss'],
   standalone: true,
-  imports: [IonIcon, IonFabButton, IonFab, IonLabel, IonItem, IonList, IonSpinner, IonButton, 
+  imports: [
+    IonIcon,
+    IonFabButton,
+    IonFab,
+    IonLabel,
+    IonItem,
+    IonList,
+    IonSpinner,
+    IonButton,
     IonContent,
     IonHeader,
     IonTitle,
@@ -23,12 +49,14 @@ import { SyncStatusIconComponent } from '../../shared/components/sync-status-ico
     CommonModule,
     IonButtons,
     RouterLink,
-    SyncStatusIconComponent
-],
+    SyncStatusIconComponent,
+    IonIcon,
+  ],
 })
-export class ReportListPage implements OnInit {
+export class ReportListPage implements ViewWillEnter{
   private getReportUseCase = inject(GetReportsUseCase);
   private logoutUseCase = inject(LogoutUseCase);
+  private syncService = inject(SyncService);
   private router = inject(Router);
   private networkService = inject(NetworkService);
   private auth = inject(Auth);
@@ -39,8 +67,17 @@ export class ReportListPage implements OnInit {
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
 
-  ngOnInit() {
+  constructor() {
+    addIcons({ add });
+    effect(() => {
+      this.syncService.syncTick();
+      this.loadReports();
+    });
+  }
+
+  ionViewWillEnter(): void {
     this.loadReports();
+     this.loadReports();
   }
 
   async loadReports() {
