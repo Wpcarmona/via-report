@@ -8,6 +8,7 @@ import { NetworkService } from 'src/app/core/services/network';
 import { Auth } from '@angular/fire/auth';
 import { Report } from 'src/app/domain/entities/report.entity';
   import { RouterLink } from '@angular/router';
+import { SyncStatusIconComponent } from '../../shared/components/sync-status-icon/sync-status-icon.component';
 
 @Component({
   selector: 'app-report-list',
@@ -21,7 +22,8 @@ import { Report } from 'src/app/domain/entities/report.entity';
     IonToolbar,
     CommonModule,
     IonButtons,
-    RouterLink
+    RouterLink,
+    SyncStatusIconComponent
 ],
 })
 export class ReportListPage implements OnInit {

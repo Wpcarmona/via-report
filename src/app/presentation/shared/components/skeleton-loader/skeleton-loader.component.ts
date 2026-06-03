@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
+import { IonSkeletonText } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-skeleton-loader',
   templateUrl: './skeleton-loader.component.html',
   styleUrls: ['./skeleton-loader.component.scss'],
   standalone: true,
+  imports: [IonSkeletonText],
 })
-export class SkeletonLoaderComponent  implements OnInit {
+export class SkeletonLoaderComponent {
 
-  constructor() { }
+  lines = input<number>(3);
 
-  ngOnInit() {}
+  skeletonLines = computed(() => Array(this.lines()).fill(0));
 
 }

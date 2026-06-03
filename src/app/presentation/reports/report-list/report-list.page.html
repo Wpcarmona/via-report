@@ -23,6 +23,7 @@
         <ion-label>
           <h2>{{ report.title }}</h2>
           <p>{{ report.description }}</p>
+          <app-sync-status-icon [status]="report.syncStatus"></app-sync-status-icon>
         </ion-label>
       </ion-item>
     }
