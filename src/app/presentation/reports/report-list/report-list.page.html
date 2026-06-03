@@ -1,13 +1,36 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>report-list</ion-title>
+    <ion-title>Mis Reportes</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">Cerrar Sesión</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">report-list</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  @if(isLoading()) {
+    <ion-spinner name="crescent"></ion-spinner>
+  }
+  @if (errorMessage() != null) {
+    <p class="error-message">{{ errorMessage() }}</p>
+  }
+  @if (!isOnline()) {
+    <p class="offline-message">Estás sin conexión. Mostrando datos en caché.</p>
+  }
+  <ion-list>
+    @for (report of reports(); track report.id) {
+      <ion-item [routerLink]="['/report-detail', report.id]">
+        <ion-label>
+          <h2>{{ report.title }}</h2>
+          <p>{{ report.description }}</p>
+        </ion-label>
+      </ion-item>
+    }
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end">
+    <ion-fab-button routerLink="/report-create">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

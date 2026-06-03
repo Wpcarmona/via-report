@@ -1,13 +1,25 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>report-detail</ion-title>
+    <ion-back-button routerLink="/report-list"></ion-back-button>
+    <ion-title>Detalle del reporte</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">report-detail</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  @if(isLoading()){
+  <ion-spinner></ion-spinner>
+  } @if(errorMessage() != null){
+  <p>{{ errorMessage() }}</p>
+  } @if(report() != null){
+  <h1>{{ report()!.title }}</h1>
+  @if (report()!.description) {
+  <p>{{ report()!.description }}</p>
+  } @if (report()!.weatherInfo) {
+  <p>Clima: {{ report()!.weatherInfo }}</p>
+  } @if (report()!.photoUrl) {
+  <img [src]="report()!.photoUrl!" />
+  }
+  <p>Latitud: {{ report()!.latitude }}, Longitud: {{ report()!.longitude }}</p>
+  <p>Estado: {{getSyncStatusLabel()}}</p>
+  }
 </ion-content>
