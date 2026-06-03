@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GetReportByIdUseCase } from 'src/app/domain/use-cases/get-report-by-id.use-case';
 import { Report } from 'src/app/domain/entities/report.entity';
 import { SyncStatus } from 'src/app/domain/entities/sync-status.enum';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-report-detail',
@@ -18,7 +19,8 @@ import { SyncStatus } from 'src/app/domain/entities/sync-status.enum';
     IonToolbar,
     CommonModule,
     IonSpinner,
-    IonBackButton
+    IonBackButton,
+    RouterLink
 ],
 })
 export class ReportDetailPage implements OnInit {

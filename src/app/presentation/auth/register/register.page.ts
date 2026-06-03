@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
@@ -12,7 +12,8 @@ import {
 } from '@ionic/angular/standalone';
 import { RegisterUseCase } from 'src/app/domain/use-cases/register.use-case';
 import { Router } from '@angular/router';
-import { IonRouterLink } from '@ionic/angular/standalone';
+import { RouterLink } from '@angular/router';
+import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-register',
@@ -28,14 +29,15 @@ import { IonRouterLink } from '@ionic/angular/standalone';
     IonInput,
     IonToolbar,
     CommonModule,
-    IonRouterLink,
     ReactiveFormsModule,
+    RouterLink,
   ],
 })
-export class RegisterPage {
+export class RegisterPage implements OnInit {
   private registerUseCase = inject(RegisterUseCase);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+  private auth = inject(Auth);
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
 
@@ -44,6 +46,13 @@ export class RegisterPage {
     password: ['', [Validators.required, Validators.minLength(6)]],
     fullName: ['', [Validators.required, Validators.minLength(3)]],
   });
+
+  async ngOnInit() {
+    await this.auth.authStateReady();
+    if (this.auth.currentUser) {
+      this.router.navigate(['/report-list']);
+    }
+  }
 
   async register() {
     if (this.registerForm.invalid) return;

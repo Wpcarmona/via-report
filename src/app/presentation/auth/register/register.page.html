@@ -13,6 +13,10 @@
         label="Correo"
       ></ion-input>
     </ion-item>
+    @if (registerForm.get('email')?.invalid &&
+    registerForm.get('email')?.touched) {
+    <p class="error-message">Ingresa un correo válido</p>
+    }
 
     <ion-item>
       <ion-input
@@ -22,6 +26,11 @@
       ></ion-input>
     </ion-item>
 
+    @if (registerForm.get('password')?.invalid &&
+    registerForm.get('password')?.touched) {
+    <p class="error-message">La contraseña debe tener mínimo 6 caracteres</p>
+    }
+
     <ion-item>
       <ion-input
         type="text"
@@ -30,11 +39,18 @@
       ></ion-input>
     </ion-item>
 
-    @if (errorMessage() != null) {
+    @if (registerForm.get('fullName')?.invalid &&
+    registerForm.get('fullName')?.touched) {
+    <p class="error-message">El nombre debe tener mínimo 3 caracteres</p>
+    } @if (errorMessage() != null) {
     <p class="error-message">{{ errorMessage() }}</p>
     }
 
-    <ion-button type="submit" expand="block" [disabled]="isLoading()">
+    <ion-button
+      type="submit"
+      expand="block"
+      [disabled]="isLoading() || registerForm.invalid"
+    >
       Registrarse
     </ion-button>
 

@@ -1,6 +1,14 @@
 import { Component, computed, input } from '@angular/core';
 import { IonIcon } from '@ionic/angular/standalone';
 import { SyncStatus } from 'src/app/domain/entities/sync-status.enum';
+import { addIcons } from 'ionicons';
+import {
+  cloudOutline,
+  syncOutline,
+  checkmarkCircleOutline,
+  alertCircleOutline,
+  helpOutline,
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-sync-status-icon',
@@ -10,8 +18,17 @@ import { SyncStatus } from 'src/app/domain/entities/sync-status.enum';
   imports: [IonIcon],
 })
 export class SyncStatusIconComponent {
-
   status = input<string>('');
+
+  constructor() {
+    addIcons({
+      cloudOutline,
+      syncOutline,
+      checkmarkCircleOutline,
+      alertCircleOutline,
+      helpOutline,
+    });
+  }
 
   icon = computed(() => {
     switch (this.status()) {
@@ -26,6 +43,5 @@ export class SyncStatusIconComponent {
       default:
         return 'help-outline';
     }
-  })
-  
+  });
 }
