@@ -163,25 +163,78 @@ Los cambios de `syncStatus` durante la sincronización se propagan a la UI de fo
 
 ## Generación del AAB para Google Play
 
+### 1. Crear el Keystore (firma de la app)
+
+Antes de generar el AAB necesitas un keystore. Ejecútalo una sola vez y guárdalo en un lugar seguro:
+
 ```bash
+keytool -genkeypair -v \
+  -keystore via-report-release.keystore \
+  -alias via-report \
+  -keyalg RSA \
+  -keysize 2048 \
+  -validity 10000
+```
+
+Te pedirá contraseña y datos de la organización. **Nunca subas el `.keystore` al repositorio.**
+
+### 2. Configurar la firma en Android
+
+En `android/app/build.gradle`, agrega dentro de `android {}`:
+
+```groovy
+signingConfigs {
+    release {
+        storeFile file("via-report-release.keystore")
+        storePassword "TU_STORE_PASSWORD"
+        keyAlias "via-report"
+        keyPassword "TU_KEY_PASSWORD"
+    }
+}
+buildTypes {
+    release {
+        signingConfig signingConfigs.release
+    }
+}
+```
+
+### 3. Generar el AAB
+
+```bash
+npm run build
+npx cap sync
 cd android
 ./gradlew bundleRelease
 ```
 
 El archivo `.aab` queda en:
 ```
-android/app/build/outputs/bundle/release/
+android/app/build/outputs/bundle/release/app-release.aab
 ```
+
+Súbelo en **Google Play Console → Producción → Crear nueva versión**.
 
 ---
 
 ## Publicación en App Store
 
-1. Abrir el proyecto en Xcode
-2. Seleccionar el target y configurar signing con tu **Apple Developer Account**
-3. **Product → Archive**
-4. En **Xcode Organizer → Distribute App → App Store Connect**
-5. Completar metadata en App Store Connect
+### Requisitos previos
+
+- Cuenta activa en **Apple Developer Program** (99 USD/año)
+- **Certificado de distribución** (`iOS Distribution Certificate`) creado en [developer.apple.com](https://developer.apple.com)
+- **Provisioning Profile** de tipo *App Store Distribution* vinculado al Bundle ID de la app
+- App registrada en **App Store Connect**
+
+### Pasos
+
+1. En **Xcode → Settings → Accounts**, agrega tu Apple ID con el equipo de desarrollo
+2. En el target de la app, selecciona **Signing & Capabilities → Team** y elige tu cuenta
+3. Asegúrate de que el **Bundle Identifier** coincida con el registrado en App Store Connect
+4. Selecciona el **Provisioning Profile** de distribución correspondiente
+5. Ve a **Product → Archive** (asegúrate de tener el scheme en *Any iOS Device*)
+6. En **Xcode Organizer**, selecciona el archive generado y clic en **Distribute App**
+7. Elige **App Store Connect → Upload**
+8. Una vez subido, en App Store Connect completa metadata, capturas y envía a revisión
 
 ---
 
