@@ -17,8 +17,8 @@ import {
   IonRefresher,
   IonRefresherContent,
 } from '@ionic/angular/standalone';
-import { GetReportsUseCase } from 'src/app/domain/use-cases/get-reports.use-case';
-import { LogoutUseCase } from 'src/app/domain/use-cases/logout.use-case';
+import { GetReportsUseCase } from 'src/app/domain/use-cases/reports/get-reports.use-case';
+import { LogoutUseCase } from 'src/app/domain/use-cases/auth/logout.use-case';
 import { Router, RouterLink } from '@angular/router';
 import { NetworkService } from 'src/app/core/services/network';
 import { Auth } from '@angular/fire/auth';

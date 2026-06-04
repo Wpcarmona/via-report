@@ -10,16 +10,13 @@ import {
   IonBackButton,
   IonButton,
   IonButtons,
-  IonItem,
-  IonInput,
-  IonTextarea,
   AlertController,
 } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GetReportByIdUseCase } from 'src/app/domain/use-cases/get-report-by-id.use-case';
+import { GetReportByIdUseCase } from 'src/app/domain/use-cases/reports/get-report-by-id.use-case';
 import { CustomInputComponent } from '../../shared/components/custom-input/custom-input.component';
 import { CustomTextareaComponent } from '../../shared/components/custom-textarea/custom-textarea.component';
-import { UpdateReportUseCase } from 'src/app/domain/use-cases/update-report.use-case';
+import { UpdateReportUseCase } from 'src/app/domain/use-cases/reports/update-report.use-case';
 import { SyncService } from 'src/app/core/services/sync';
 import { NetworkService } from 'src/app/core/services/network';
 import { Report } from 'src/app/domain/entities/report.entity';

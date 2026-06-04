@@ -1,4 +1,4 @@
-// ── DARK MODE (default) ──────────────────────────────────────────
+// ── DARK MODE ----
 .auth-content {
   --background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
 }
@@ -74,7 +74,7 @@
 }
 
 
-// ── LIGHT MODE ───────────────────────────────────────────────────
+// ── LIGHT MODE ----
 @media (prefers-color-scheme: light) {
   .auth-content {
     --background: linear-gradient(145deg, #dbeeff 0%, #c8e6fb 50%, #b0d9f8 100%);

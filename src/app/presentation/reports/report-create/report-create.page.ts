@@ -7,14 +7,10 @@ import {
   IonTitle,
   IonToolbar,
   IonBackButton,
-  IonItem,
-  IonLabel,
   IonButton,
-  IonInput,
   IonSkeletonText,
-  IonTextarea,
 } from '@ionic/angular/standalone';
-import { CreateReportUseCase } from 'src/app/domain/use-cases/create-report.use-case';
+import { CreateReportUseCase } from 'src/app/domain/use-cases/reports/create-report.use-case';
 import { CustomInputComponent } from '../../shared/components/custom-input/custom-input.component';
 import { CustomTextareaComponent } from '../../shared/components/custom-textarea/custom-textarea.component';
 import { Router } from '@angular/router';
@@ -24,7 +20,7 @@ import { Auth } from '@angular/fire/auth';
 import { SyncStatus } from 'src/app/domain/entities/sync-status.enum';
 import { Report } from 'src/app/domain/entities/report.entity';
 import { Geolocation } from '@capacitor/geolocation';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Camera } from '@capacitor/camera';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
 
@@ -59,8 +55,8 @@ export class ReportCreatePage implements OnInit {
   isLoadingWeather = signal(false);
   weatherInfo = signal<string | null>(null);
   errorMessage = signal<string | null>(null);
-  photoLocalPath = signal<string | null>(null); // Ruta nativa guardada en SQLite
-  photoPreview = signal<string | null>(null);   // URL web para mostrar en pantalla
+  photoLocalPath = signal<string | null>(null);
+  photoPreview = signal<string | null>(null);
   latitude = signal<number | null>(null);
   longitude = signal<number | null>(null);
 
@@ -112,9 +108,9 @@ export class ReportCreatePage implements OnInit {
       const image = await Camera.getPhoto({
         quality: 80,
         allowEditing: false,
-        resultType: CameraResultType.Base64,
-        source: CameraSource.Camera,
-      });
+        resultType: 'base64',
+        source: 'CAMERA',
+      } as any);
 
       if (image.base64String) {
         const fileName = `photo_${Date.now()}.jpeg`;
@@ -123,9 +119,7 @@ export class ReportCreatePage implements OnInit {
           data: image.base64String,
           directory: Directory.Data,
         });
-        // URI nativa para guardar en SQLite
         this.photoLocalPath.set(saved.uri);
-        // URL web para mostrar en el template
         this.photoPreview.set(Capacitor.convertFileSrc(saved.uri));
       }
     } catch (error) {
@@ -145,7 +139,7 @@ export class ReportCreatePage implements OnInit {
         user!.uid,
         title!,
         description ?? null,
-        this.photoLocalPath(), // Guardamos la ruta local, no la URL de Cloudinary
+        this.photoLocalPath(),
         this.latitude()!,
         this.longitude()!,
         this.weatherInfo(),

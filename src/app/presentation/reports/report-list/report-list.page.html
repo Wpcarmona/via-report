@@ -32,12 +32,6 @@
     <app-skeleton-loader [lines]="6"></app-skeleton-loader>
   }
 
-  @if (reports().length === 0 && !isLoading() && !isDownloading()) {
-    <div class="empty-state">
-      <p>No hay reportes aún. ¡Crea el primero!</p>
-    </div>
-  }
-
   <ion-list>
     @for (report of reports(); track report.id) {
       <ion-item [routerLink]="['/report-detail', report.id]">
@@ -51,6 +45,12 @@
         </ion-label>
         <ion-icon name="chevron-forward" slot="end"></ion-icon>
       </ion-item>
+    } @empty {
+      @if (!isLoading() && !isDownloading()) {
+        <div class="empty-state">
+          <p>No hay reportes aún. ¡Crea el primero!</p>
+        </div>
+      }
     }
   </ion-list>
 

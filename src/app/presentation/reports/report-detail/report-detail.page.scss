@@ -1,4 +1,4 @@
-// ── DARK MODE (default) ──────────────────────────────────────────
+// ── DARK MODE ---
 .dark-page {
   --background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
 }
@@ -7,22 +7,52 @@
   display: flex;
   justify-content: center;
   padding: 40px;
-  ion-spinner { color: #4fc3f7; }
+  ion-spinner {
+    color: #4fc3f7;
+  }
 }
 
-.report-container { padding: 20px 16px; }
+.report-container {
+  padding: 20px 16px;
+}
 
-.report-title { font-size: 22px; font-weight: 700; color: #ffffff; margin: 0 0 4px; }
+.report-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 4px;
+}
 
-.report-date { font-size: 12px; color: rgba(255, 255, 255, 0.5); margin: 0 0 16px; }
+.report-date {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 16px;
+}
 
-.report-description { color: rgba(255, 255, 255, 0.8); font-size: 15px; line-height: 1.5; margin-bottom: 16px; }
+.report-description {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
 
-.photo-container { margin-bottom: 16px; }
+.photo-container {
+  margin-bottom: 16px;
+}
 
-.report-photo { width: 100%; border-radius: 14px; object-fit: cover; max-height: 280px; }
+.report-photo {
+  width: 100%;
+  border-radius: 14px;
+  object-fit: cover;
+  max-height: 280px;
+}
 
-.photo-path { font-size: 11px; color: rgba(255, 255, 255, 0.35); word-break: break-all; margin-top: 6px; }
+.photo-path {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  word-break: break-all;
+  margin-top: 6px;
+}
 
 .info-card {
   background: rgba(255, 255, 255, 0.07);
@@ -32,7 +62,11 @@
   margin-bottom: 10px;
   backdrop-filter: blur(6px);
 
-  p { margin: 0; color: rgba(255, 255, 255, 0.85); font-size: 14px; }
+  p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 14px;
+  }
 }
 
 .map-container {
@@ -42,28 +76,48 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.edit-container { padding: 16px; }
+.edit-container {
+  padding: 16px;
+}
 
-.error-message { color: #ff6b6b; padding: 0 16px; font-size: 13px; }
+.error-message {
+  color: #ff6b6b;
+  padding: 0 16px;
+  font-size: 13px;
+}
 
-
-// ── LIGHT MODE ───────────────────────────────────────────────────
+// ── LIGHT MODE ---
 @media (prefers-color-scheme: light) {
   .dark-page {
-    --background: linear-gradient(145deg, #dbeeff 0%, #e8f4fd 50%, #f0f7ff 100%);
+    --background: linear-gradient(
+      145deg,
+      #dbeeff 0%,
+      #e8f4fd 50%,
+      #f0f7ff 100%
+    );
   }
 
   .center-spinner {
-    ion-spinner { color: #0f3460; }
+    ion-spinner {
+      color: #0f3460;
+    }
   }
 
-  .report-title { color: #1c1c1e; }
+  .report-title {
+    color: #1c1c1e;
+  }
 
-  .report-date { color: #8e8e93; }
+  .report-date {
+    color: #8e8e93;
+  }
 
-  .report-description { color: #3a3a3c; }
+  .report-description {
+    color: #3a3a3c;
+  }
 
-  .photo-path { color: #8e8e93; }
+  .photo-path {
+    color: #8e8e93;
+  }
 
   .info-card {
     background: rgba(255, 255, 255, 0.85);
@@ -71,8 +125,12 @@
     backdrop-filter: none;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 
-    p { color: #1c1c1e; }
+    p {
+      color: #1c1c1e;
+    }
   }
 
-  .map-container { border: 1px solid rgba(0, 0, 0, 0.08); }
+  .map-container {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
 }

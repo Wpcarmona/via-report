@@ -1,16 +1,16 @@
 import { inject, Injectable } from '@angular/core';
-import { ReportRepository } from '../repositories/report.repository';
-import { Report } from '../entities/entities';
+import { ReportRepository } from '../../repositories/report.repository';
+import { Report } from '../../entities/entities';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CreateReportUseCase {
+export class UpdateReportUseCase {
 
   private reportRepository = inject(ReportRepository);
 
   async execute(report: Report): Promise<void> {
-    return this.reportRepository.create(report);
+    return this.reportRepository.update(report);
   }
   
 }
