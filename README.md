@@ -240,4 +240,4 @@ Súbelo en **Google Play Console → Producción → Crear nueva versión**.
 
 ## Tiempo invertido
 
-el tiempo invertido ha sido 2 dia y medio 
+el tiempo invertido ha sido 10 horas
