@@ -6,7 +6,7 @@ import {
   IonButton,
   IonInput,
 } from '@ionic/angular/standalone';
-import { LoginUseCase } from 'src/app/domain/use-cases/login.use-case';
+import { LoginUseCase } from 'src/app/domain/use-cases/auth/login.use-case';
 import { CustomInputComponent } from '../../shared/components/custom-input/custom-input.component';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';

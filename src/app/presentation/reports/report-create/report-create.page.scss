@@ -1,4 +1,4 @@
-// ── DARK MODE (default) ──────────────────────────────────────────
+// ── DARK MODE ---
 .dark-page {
   --background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
 }
@@ -55,7 +55,7 @@
 }
 
 
-// ── LIGHT MODE ───────────────────────────────────────────────────
+// ── LIGHT MODE ---
 @media (prefers-color-scheme: light) {
   .dark-page {
     --background: linear-gradient(145deg, #dbeeff 0%, #e8f4fd 50%, #f0f7ff 100%);

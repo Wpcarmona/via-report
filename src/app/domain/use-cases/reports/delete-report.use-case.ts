@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ReportRepository } from '../repositories/report.repository';
+import { ReportRepository } from '../../repositories/report.repository';
 
 @Injectable({
   providedIn: 'root',

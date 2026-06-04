@@ -27,7 +27,6 @@ export class SyncService {
       this.lastStatusUpdate.set({ id: report.id, status: SyncStatus.SYNCING });
 
       try {
-        // si hay una foto local se sube a Cloudinary antes de guardar en Firestore
         let reportToSync = report;
         if (report.photoUrl && this.cloudinaryDatasource.isLocalPath(report.photoUrl)) {
           const cloudinaryUrl = await this.cloudinaryDatasource.uploadPhoto(report.photoUrl);
@@ -49,7 +48,6 @@ export class SyncService {
       }
     }
 
-    // Elimina los reportes de firebase que son marcados como deleted localmente
     const pendingDeletions = await this.reportRepository.getPendingDeletions();
     for (const report of pendingDeletions) {
       try {

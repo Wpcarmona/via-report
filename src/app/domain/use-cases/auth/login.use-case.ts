@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { AuthRepository } from '../repositories/auth.repository';
-import { User } from '../entities/entities';
+import { AuthRepository } from '../../repositories/auth.repository';
+import { User } from '../../entities/entities';
 
 @Injectable({
   providedIn: 'root',
