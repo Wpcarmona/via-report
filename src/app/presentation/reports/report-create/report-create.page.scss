@@ -1,0 +1,85 @@
+// ── DARK MODE (default) ──────────────────────────────────────────
+.dark-page {
+  --background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.create-container { padding: 20px 16px; }
+
+.photo-section {
+  margin-bottom: 12px;
+
+  .photo-preview {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 14px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  ion-button { --border-radius: 12px; --color: #4fc3f7; --border-color: rgba(79, 195, 247, 0.4); }
+}
+
+.info-section {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  backdrop-filter: blur(6px);
+}
+
+.info-text { margin: 0; font-size: 14px; color: rgba(255, 255, 255, 0.85); }
+
+.muted { color: rgba(255, 255, 255, 0.4); }
+
+.error-banner {
+  background: rgba(255, 107, 107, 0.15);
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 16px;
+  color: #ff6b6b;
+  font-size: 13px;
+}
+
+.submit-btn {
+  --background: #4fc3f7;
+  --background-activated: #0288d1;
+  --color: #0f3460;
+  --border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  height: 50px;
+  margin-top: 8px;
+}
+
+
+// ── LIGHT MODE ───────────────────────────────────────────────────
+@media (prefers-color-scheme: light) {
+  .dark-page {
+    --background: linear-gradient(145deg, #dbeeff 0%, #e8f4fd 50%, #f0f7ff 100%);
+  }
+
+  .info-section {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    backdrop-filter: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .info-text { color: #1c1c1e; }
+
+  .muted { color: #8e8e93; }
+
+  .photo-section {
+    .photo-preview { border-color: rgba(0, 0, 0, 0.08); }
+    ion-button { --color: #0f3460; --border-color: rgba(15, 52, 96, 0.4); }
+  }
+
+  .submit-btn {
+    --background: #0f3460;
+    --background-activated: #16213e;
+    --color: #ffffff;
+  }
+}

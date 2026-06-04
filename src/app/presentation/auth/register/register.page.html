@@ -1,61 +1,65 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Registrarse</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="auth-content">
+  <div class="auth-container">
 
-<ion-content [fullscreen]="true">
-  <form [formGroup]="registerForm" (ngSubmit)="register()">
-    <ion-item>
-      <ion-input
-        type="email"
-        formControlName="email"
-        label="Correo"
-      ></ion-input>
-    </ion-item>
-    @if (registerForm.get('email')?.invalid &&
-    registerForm.get('email')?.touched) {
-    <p class="error-message">Ingresa un correo válido</p>
-    }
+    <div class="brand">
+      <div class="brand-icon">📍</div>
+      <h1 class="brand-title">Via Report</h1>
+      <p class="brand-subtitle">Crea tu cuenta gratuita</p>
+    </div>
 
-    <ion-item>
-      <ion-input
-        type="password"
-        formControlName="password"
-        label="Contraseña"
-      ></ion-input>
-    </ion-item>
+    <div class="auth-card">
+      <h2 class="card-title">Crear cuenta</h2>
 
-    @if (registerForm.get('password')?.invalid &&
-    registerForm.get('password')?.touched) {
-    <p class="error-message">La contraseña debe tener mínimo 6 caracteres</p>
-    }
+      <form [formGroup]="registerForm" (ngSubmit)="register()">
 
-    <ion-item>
-      <ion-input
-        type="text"
-        formControlName="fullName"
-        label="Nombre Completo"
-      ></ion-input>
-    </ion-item>
+        <app-custom-input
+          [control]="registerForm.get('fullName')!"
+          label="Nombre completo"
+          type="text"
+          variant="dark"
+          errorMessage="Mínimo 3 caracteres">
+        </app-custom-input>
 
-    @if (registerForm.get('fullName')?.invalid &&
-    registerForm.get('fullName')?.touched) {
-    <p class="error-message">El nombre debe tener mínimo 3 caracteres</p>
-    } @if (errorMessage() != null) {
-    <p class="error-message">{{ errorMessage() }}</p>
-    }
+        <app-custom-input
+          [control]="registerForm.get('email')!"
+          label="Correo electrónico"
+          type="email"
+          variant="dark"
+          errorMessage="Ingresa un correo válido">
+        </app-custom-input>
 
-    <ion-button
-      type="submit"
-      expand="block"
-      [disabled]="isLoading() || registerForm.invalid"
-    >
-      Registrarse
-    </ion-button>
+        <app-custom-input
+          [control]="registerForm.get('password')!"
+          label="Contraseña"
+          type="password"
+          variant="dark"
+          errorMessage="Mínimo 6 caracteres">
+        </app-custom-input>
 
-    <ion-button fill="clear" routerLink="/login">
-      ¿Ya tienes cuenta? Inicia sesión
-    </ion-button>
-  </form>
+        @if (errorMessage()) {
+          <div class="error-banner">⚠️ {{ errorMessage() }}</div>
+        }
+
+        <ion-button
+          type="submit"
+          expand="block"
+          class="submit-btn"
+          [disabled]="isLoading() || registerForm.invalid">
+          {{ isLoading() ? 'Creando cuenta...' : 'Crear cuenta' }}
+        </ion-button>
+
+        <div class="divider">¿Ya tienes cuenta?</div>
+
+        <ion-button
+          fill="outline"
+          expand="block"
+          class="secondary-btn"
+          routerLink="/login">
+          Iniciar sesión
+        </ion-button>
+
+      </form>
+    </div>
+
+  </div>
 </ion-content>

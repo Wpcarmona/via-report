@@ -3,14 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonItem,
   IonButton,
   IonInput,
 } from '@ionic/angular/standalone';
 import { RegisterUseCase } from 'src/app/domain/use-cases/register.use-case';
+import { CustomInputComponent } from '../../shared/components/custom-input/custom-input.component';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
@@ -21,16 +18,12 @@ import { Auth } from '@angular/fire/auth';
   styleUrls: ['./register.page.scss'],
   standalone: true,
   imports: [
-    IonButton,
-    IonItem,
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonInput,
-    IonToolbar,
+    IonButton,
     CommonModule,
     ReactiveFormsModule,
     RouterLink,
+    CustomInputComponent,
   ],
 })
 export class RegisterPage implements OnInit {

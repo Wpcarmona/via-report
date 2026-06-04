@@ -2,5 +2,6 @@ export enum SyncStatus {
     PENDING = 'pending',
     SYNCING = 'syncing',
     SYNCED = 'synced',
-    ERROR = 'error'
+    ERROR = 'error',
+    DELETED = 'deleted'
 }

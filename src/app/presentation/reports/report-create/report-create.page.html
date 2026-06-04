@@ -1,52 +1,71 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-back-button routerLink="/report-list" slot="start"></ion-back-button>
+    <ion-back-button slot="start" defaultHref="/report-list"></ion-back-button>
     <ion-title>Crear reporte</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <form [formGroup]="reportForm" (ngSubmit)="saveReport()">
-    <ion-item>
-      <ion-input 
-      type="text" 
-      formControlName="title" 
-      label="Título"
-      labelPlacement="floating"
-      >
-    </ion-input>
-    </ion-item>
+<ion-content [fullscreen]="true" class="dark-page">
+  <div class="create-container">
+    <form [formGroup]="reportForm" (ngSubmit)="saveReport()">
 
-    <ion-item>
-      <ion-textarea
+      <app-custom-input
+        [control]="reportForm.get('title')!"
+        label="Título"
         type="text"
-        formControlName="description"
-        label="Descripción"
-        labelPlacement="floating"
-        rows="4"
-      ></ion-textarea>
-    </ion-item>
+        variant="dark"
+        errorMessage="El título es requerido (máximo 100 caracteres)">
+      </app-custom-input>
 
-  @if (isLoadingWeather()) {
-    <ion-skeleton-text animated="true" style="width: 80%; height: 20px;"></ion-skeleton-text>
-  } @else if (weatherInfo()) { 
-    <p>{{ weatherInfo() }}</p>
-  } @else {
-    <p>Sin conexión, no se pudo obtener clima</p>
-  }
+      <app-custom-textarea
+        [control]="reportForm.get('description')!"
+        label="Descripción (opcional)"
+        variant="dark"
+        [rows]="4">
+      </app-custom-textarea>
 
-  @if (latitude() && longitude()) {
-    <ion-label>Latitud: {{ latitude() }}, Longitud: {{ longitude() }}</ion-label>
-  }
+      <!-- Foto -->
+      <div class="photo-section">
+        @if (photoPreview()) {
+          <img [src]="photoPreview()!" class="photo-preview" alt="Foto del incidente" />
+          <ion-button fill="outline" expand="block" (click)="takePhoto()">Cambiar foto</ion-button>
+        } @else {
+          <ion-button fill="outline" expand="block" (click)="takePhoto()">
+            📷 Tomar foto
+          </ion-button>
+        }
+      </div>
 
-  <ion-button 
-  type="submit"
-  expand="block"
-  [disabled]="!reportForm.valid || isLoadingWeather()"
-  >Guardar</ion-button>
+      <!-- Clima -->
+      <div class="info-section">
+        @if (isLoadingWeather()) {
+          <ion-skeleton-text animated="true" style="width: 70%; height: 18px; border-radius: 6px;"></ion-skeleton-text>
+        } @else if (weatherInfo()) {
+          <p class="info-text">🌤 {{ weatherInfo() }}</p>
+        } @else {
+          <p class="info-text muted">Sin conexión — no se pudo obtener clima</p>
+        }
+      </div>
 
-  @if (errorMessage()) {
-    <p class="error-message">{{ errorMessage() }}</p>
-  }
-  </form>
+      <!-- Ubicación -->
+      @if (latitude() && longitude()) {
+        <div class="info-section">
+          <p class="info-text">📍 Lat: {{ latitude() | number:'1.4-4' }}, Lon: {{ longitude() | number:'1.4-4' }}</p>
+        </div>
+      }
+
+      @if (errorMessage()) {
+        <div class="error-banner">⚠️ {{ errorMessage() }}</div>
+      }
+
+      <ion-button
+        type="submit"
+        expand="block"
+        class="submit-btn"
+        [disabled]="!reportForm.valid || isLoadingWeather()">
+        Guardar Reporte
+      </ion-button>
+
+    </form>
+  </div>
 </ion-content>

@@ -16,6 +16,15 @@ export const firebaseConfig = {
   measurementId: "G-GYCZXWEK20"
 };
 
+export const cloudinaryConfig = {
+  cloudName: 'daxaqdsm0',
+  uploadPreset: 'via-report-preset'
+};
+
+export const googleMapsConfig = {
+  apiKey: 'AIzaSyCpCUKCRfyiNETFhcGMqYa8j782djLkgQQ'
+};
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

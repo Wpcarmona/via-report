@@ -1,0 +1,14 @@
+<div class="textarea-wrapper">
+  <ion-textarea
+    fill="outline"
+    [label]="label()"
+    labelPlacement="floating"
+    [rows]="rows()"
+    [formControl]="$any(control())"
+    [class.dark-textarea]="variant() === 'dark'"
+    class="custom-textarea">
+  </ion-textarea>
+  @if (control().invalid && control().touched && errorMessage()) {
+    <p class="textarea-error" [class.dark-error]="variant() === 'dark'">{{ errorMessage() }}</p>
+  }
+</div>

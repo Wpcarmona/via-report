@@ -7,31 +7,57 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  @if(isLoading()) {
-    <ion-spinner name="crescent"></ion-spinner>
+<ion-content [fullscreen]="true" class="dark-page">
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  @if (!isOnline()) {
+    <div class="offline-banner">
+      <span class="offline-icon">📡</span>
+      <div class="offline-text">
+        <span class="offline-title">Sin conexión</span>
+        <span class="offline-subtitle">Mostrando datos locales</span>
+      </div>
+      <span class="offline-dot"></span>
+    </div>
   }
-  @if (errorMessage() != null) {
+
+  @if (errorMessage()) {
     <p class="error-message">{{ errorMessage() }}</p>
   }
-  @if (!isOnline()) {
-    <p class="offline-message">Estás sin conexión. Mostrando datos en caché.</p>
+
+  @if (isDownloading() && reports().length === 0) {
+    <app-skeleton-loader [lines]="6"></app-skeleton-loader>
   }
+
+  @if (reports().length === 0 && !isLoading() && !isDownloading()) {
+    <div class="empty-state">
+      <p>No hay reportes aún. ¡Crea el primero!</p>
+    </div>
+  }
+
   <ion-list>
     @for (report of reports(); track report.id) {
       <ion-item [routerLink]="['/report-detail', report.id]">
+        @if (report.photoUrl) {
+          <img slot="start" [src]="getDisplayPhotoUrl(report.photoUrl)" class="thumbnail" alt="foto" />
+        }
         <ion-label>
           <h2>{{ report.title }}</h2>
-          <p>{{ report.description }}</p>
+          <p class="date">{{ report.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
           <app-sync-status-icon [status]="report.syncStatus"></app-sync-status-icon>
         </ion-label>
+        <ion-icon name="chevron-forward" slot="end"></ion-icon>
       </ion-item>
     }
   </ion-list>
 
-  <ion-fab vertical="bottom" horizontal="end">
+  <ion-fab vertical="bottom" horizontal="end" style="margin-bottom: 24px;">
     <ion-fab-button routerLink="/report-create">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
 </ion-content>

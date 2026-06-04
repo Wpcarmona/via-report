@@ -34,6 +34,10 @@ export class ReportRepositoryImpl extends ReportRepository {
     const pendingsReports = await this.sqlite.getPendingReports();
     return pendingsReports.map((report) => ReportMapper.fromSqlite(report));
   }
+  override async getPendingDeletions(): Promise<Report[]> {
+    const reports = await this.sqlite.getPendingDeletions();
+    return reports.map((report) => ReportMapper.fromSqlite(report));
+  }
   override async updateSyncStatus(
     id: string,
     syncStatus: SyncStatus,

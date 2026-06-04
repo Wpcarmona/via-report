@@ -1,0 +1,14 @@
+<div class="input-wrapper">
+  <ion-input
+    fill="outline"
+    [type]="type()"
+    [label]="label()"
+    labelPlacement="floating"
+    [formControl]="$any(control())"
+    [class.dark-input]="variant() === 'dark'"
+    class="custom-input">
+  </ion-input>
+  @if (control().invalid && control().touched && errorMessage()) {
+    <p class="input-error" [class.dark-error]="variant() === 'dark'">{{ errorMessage() }}</p>
+  }
+</div>

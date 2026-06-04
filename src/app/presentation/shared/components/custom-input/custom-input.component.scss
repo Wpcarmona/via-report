@@ -1,0 +1,37 @@
+.input-wrapper { margin-bottom: 16px; }
+
+// Default (light system)
+.custom-input {
+  --border-radius: 12px;
+  --border-color: var(--ion-color-medium);
+  --highlight-color-focused: var(--ion-color-primary);
+  --label-color: var(--ion-color-medium);
+  --color: var(--ion-text-color);
+  --background: var(--ion-item-background, var(--ion-background-color));
+}
+
+// Variant dark (fondo oscuro)
+.dark-input {
+  --background: rgba(255, 255, 255, 0.05);
+  --color: #ffffff;
+  --border-color: rgba(255, 255, 255, 0.2);
+  --highlight-color-focused: #4fc3f7;
+  --label-color: rgba(255, 255, 255, 0.6);
+}
+
+.input-error { color: var(--ion-color-danger); font-size: 12px; margin: 4px 4px 0; }
+
+.dark-error { color: #ff6b6b; }
+
+// Light mode: dark-input se adapta para fondos claros
+@media (prefers-color-scheme: light) {
+  .dark-input {
+    --background: rgba(255, 255, 255, 0.7);
+    --color: #1c1c1e;
+    --border-color: rgba(15, 52, 96, 0.25);
+    --highlight-color-focused: #0f3460;
+    --label-color: #6c6c70;
+  }
+
+  .dark-error { color: #ff3b30; }
+}

@@ -1,25 +1,105 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-back-button routerLink="/report-list" slot="start"></ion-back-button>
-    <ion-title>Detalle del reporte</ion-title>
+    <ion-back-button slot="start" defaultHref="/report-list"></ion-back-button>
+    <ion-title>{{ isEditing() ? 'Editar reporte' : 'Detalle del reporte' }}</ion-title>
+    <ion-buttons slot="end">
+      @if (!isEditing()) {
+        <ion-button (click)="startEditing()">Editar</ion-button>
+        <ion-button color="danger" (click)="confirmDelete()">Eliminar</ion-button>
+      } @else {
+        <ion-button (click)="cancelEditing()">Cancelar</ion-button>
+        <ion-button color="primary" [disabled]="editForm.invalid || isSaving()" (click)="saveEdit()">
+          {{ isSaving() ? 'Guardando...' : 'Guardar' }}
+        </ion-button>
+      }
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  @if(isLoading()){
-  <ion-spinner></ion-spinner>
-  } @if(errorMessage() != null){
-  <p>{{ errorMessage() }}</p>
-  } @if(report() != null){
-  <h1>{{ report()!.title }}</h1>
-  @if (report()!.description) {
-  <p>{{ report()!.description }}</p>
-  } @if (report()!.weatherInfo) {
-  <p>Clima: {{ report()!.weatherInfo }}</p>
-  } @if (report()!.photoUrl) {
-  <img [src]="report()!.photoUrl!" />
+<ion-content [fullscreen]="true" class="dark-page">
+
+  @if (isLoading()) {
+    <div class="center-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
   }
-  <p>Latitud: {{ report()!.latitude }}, Longitud: {{ report()!.longitude }}</p>
-  <p>Estado: {{getSyncStatusLabel()}}</p>
+
+  @if (errorMessage()) {
+    <p class="error-message">{{ errorMessage() }}</p>
   }
+
+  @if (report()) {
+
+    <!-- MODO EDICIÓN -->
+    @if (isEditing()) {
+      <div class="edit-container">
+        <form [formGroup]="editForm">
+          <app-custom-input
+            [control]="editForm.get('title')!"
+            label="Título"
+            type="text"
+            variant="dark"
+            errorMessage="El título es requerido (máximo 100 caracteres)">
+          </app-custom-input>
+          <app-custom-textarea
+            [control]="editForm.get('description')!"
+            label="Descripción"
+            variant="dark"
+            [rows]="4">
+          </app-custom-textarea>
+        </form>
+      </div>
+    }
+
+    <!-- MODO VISTA -->
+    @if (!isEditing()) {
+      <div class="report-container">
+
+        <h1 class="report-title">{{ report()!.title }}</h1>
+        <p class="report-date">{{ report()!.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+
+        @if (report()!.description) {
+          <p class="report-description">{{ report()!.description }}</p>
+        }
+
+        @if (report()!.photoUrl) {
+          <div class="photo-container">
+            <img [src]="getDisplayPhotoUrl(report()!.photoUrl)" class="report-photo" alt="Foto del incidente" />
+            <p class="photo-path">📁 {{ report()!.photoUrl }}</p>
+          </div>
+        }
+
+        @if (report()!.weatherInfo) {
+          <div class="info-card">
+            <p>🌤 Clima: {{ report()!.weatherInfo }}</p>
+          </div>
+        }
+
+        <div class="info-card">
+          <p>📡 Estado: {{ getSyncStatusLabel() }}</p>
+        </div>
+
+        <div class="info-card">
+          <p>📍 Lat: {{ report()!.latitude | number:'1.4-4' }}, Lon: {{ report()!.longitude | number:'1.4-4' }}</p>
+        </div>
+
+        @if (mapUrl()) {
+          <div class="map-container">
+            <iframe
+              [src]="mapUrl()!"
+              width="100%"
+              height="300"
+              style="border:0; border-radius: 8px;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        }
+
+      </div>
+    }
+
+  }
+
 </ion-content>
