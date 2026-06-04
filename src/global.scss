@@ -35,3 +35,16 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+// Dark toolbar para páginas con fondo oscuro
+.dark-toolbar {
+  --background: transparent;
+  --color: #ffffff;
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+
+ion-header:has(+ ion-content.dark-page) ion-toolbar {
+  --background: rgba(15, 52, 96, 0.95);
+  --color: #ffffff;
+  --border-color: rgba(255, 255, 255, 0.1);
+}

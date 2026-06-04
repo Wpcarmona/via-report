@@ -11,3 +11,12 @@ export const firebaseConfig = {
   appId: "1:867753087059:web:fe309b1b4c570bb5f4f6a6",
   measurementId: "G-GYCZXWEK20"
 };
+
+export const cloudinaryConfig = {
+  cloudName: 'daxaqdsm0',
+  uploadPreset: 'via-report-preset'
+};
+
+export const googleMapsConfig = {
+  apiKey: 'AIzaSyCpCUKCRfyiNETFhcGMqYa8j782djLkgQQ'
+};

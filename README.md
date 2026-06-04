@@ -56,9 +56,90 @@ ionic cap run ios        # para iOS
 
 ## Estrategia de sincronización offline
 
-Todos los reportes se guardan primero en SQLite local con `syncStatus = PENDING`. Al recuperar conexión, `SyncService` detecta el cambio a través de `NetworkService` (signal). Toma los reportes con `syncStatus = PENDING`, los marca como `SYNCING` y los sube a Firestore. Si la subida es exitosa el estado pasa a `SYNCED`; si falla, a `ERROR`.
+### Principio general: Local First
 
-**Resolución de conflictos:** si un reporte existe en ambos lados, gana el que tenga `updatedAt` más reciente.
+La app sigue una arquitectura **offline-first**: SQLite es la fuente de verdad en el dispositivo. Firestore actúa únicamente como backend de sincronización, nunca como fuente primaria en tiempo real.
+
+---
+
+### Estados de sincronización (`SyncStatus`)
+
+Cada reporte tiene un campo `syncStatus` que refleja su estado en todo momento:
+
+| Estado | Descripción |
+|---|---|
+| `PENDING` | Creado o editado localmente, aún no subido a Firestore |
+| `SYNCING` | Actualmente en proceso de subida |
+| `SYNCED` | Existe en Firestore y está actualizado |
+| `ERROR` | Intentó sincronizar y falló |
+| `DELETED` | Eliminado localmente mientras estaba offline, pendiente de borrar en Firestore |
+
+---
+
+### Flujo de creación offline
+
+1. El usuario crea un reporte sin conexión.
+2. La foto se guarda en el **filesystem del dispositivo** (`@capacitor/filesystem`). Solo la ruta local se almacena en SQLite, nunca el binario.
+3. El reporte se persiste en SQLite con `syncStatus = PENDING`.
+4. La UI muestra el reporte inmediatamente con ícono de nube (pendiente).
+
+---
+
+### Flujo de sincronización al reconectar
+
+El `NetworkService` expone un **Signal reactivo** (`online`) que escucha cambios de red mediante `@capacitor/network`. Cuando cambia a `true`:
+
+1. El `effect()` en `AppComponent` detecta el cambio y llama a `SyncService.syncPendingReports()`.
+2. Adicionalmente, `ionViewWillEnter` en el listado también dispara la sync si hay conexión, garantizando que incluso si el effect no se disparó, la sync ocurre al navegar.
+
+**Dentro de `syncPendingReports()`:**
+
+```
+Para cada reporte con PENDING:
+  1. Actualiza estado → SYNCING  (usuario ve el ícono girando)
+  2. Si tiene foto local → sube a Cloudinary → obtiene URL pública
+  3. Actualiza la URL de la foto en SQLite
+  4. Guarda el reporte en Firestore con la URL de Cloudinary
+  5. Si éxito → SYNCED | Si falla → ERROR
+
+Para cada reporte con DELETED:
+  1. Elimina el documento de Firestore
+  2. Elimina la fila de SQLite
+```
+
+---
+
+### Eliminación offline
+
+Cuando el usuario elimina un reporte sin conexión:
+- Si era `PENDING` (nunca llegó a Firestore): se borra directamente de SQLite.
+- Si era `SYNCED` (existe en Firestore): se marca como `DELETED` en SQLite (no se borra la fila). Al reconectar, `syncPendingReports()` lo elimina de Firestore y luego limpia SQLite.
+- Mientras tiene estado `DELETED`, se filtra del listado para que no aparezca en la UI.
+
+---
+
+### Descarga de reportes remotos
+
+`SyncService.downloadRemoteReports(userId)` descarga de Firestore los reportes que no existen localmente (por ejemplo, al iniciar sesión en un dispositivo nuevo):
+
+```
+Para cada reporte en Firestore:
+  - Si no existe en SQLite → crea la fila local
+  - Si existe con estado DELETED → lo ignora (evita restaurar reportes borrados offline)
+  - Si existe y el remoto tiene updatedAt más reciente → actualiza el local
+```
+
+---
+
+### Resolución de conflictos
+
+Si un reporte fue editado en dos dispositivos distintos, gana el que tenga el campo `updatedAt` más reciente. Este campo se actualiza cada vez que el usuario edita un reporte, tanto en SQLite como en Firestore.
+
+---
+
+### Visibilidad en tiempo real
+
+Los cambios de `syncStatus` durante la sincronización se propagan a la UI de forma inmediata sin releer SQLite, gracias al Signal `lastStatusUpdate` en `SyncService`. El listado tiene un `effect()` que escucha este signal y actualiza el reporte específico en memoria — el ícono de estado cambia en tiempo real mientras sube.
 
 ---
 

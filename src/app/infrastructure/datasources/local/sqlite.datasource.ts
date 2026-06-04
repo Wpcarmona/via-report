@@ -103,8 +103,17 @@ export class SqliteDatasource {
   async getPendingReports(): Promise<ReportSqliteModel[]> {
     const db = this.getDB();
     const result = await db.query(
-      "SELECT * FROM reports WHERE syncStatus = ?",
+      'SELECT * FROM reports WHERE syncStatus = ?',
       ['pending']
+    );
+    return result.values ?? [];
+  }
+
+  async getPendingDeletions(): Promise<ReportSqliteModel[]> {
+    const db = this.getDB();
+    const result = await db.query(
+      'SELECT * FROM reports WHERE syncStatus = ?',
+      ['deleted']
     );
     return result.values ?? [];
   }

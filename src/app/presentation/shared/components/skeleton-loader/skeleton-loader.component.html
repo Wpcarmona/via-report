@@ -1,3 +1,15 @@
-@for (line of skeletonLines(); track $index) {
-  <ion-skeleton-text animated style="width: 100%; height: 20px; margin: 8px 0" ></ion-skeleton-text>
+@for (item of skeletonLines(); track $index) {
+  <div class="skeleton-item">
+    <div class="skeleton-thumbnail">
+      <ion-skeleton-text animated></ion-skeleton-text>
+    </div>
+    <div class="skeleton-body">
+      <ion-skeleton-text animated class="skeleton-title"></ion-skeleton-text>
+      <ion-skeleton-text animated class="skeleton-date"></ion-skeleton-text>
+      <ion-skeleton-text animated class="skeleton-status"></ion-skeleton-text>
+    </div>
+    <div class="skeleton-arrow">
+      <ion-skeleton-text animated></ion-skeleton-text>
+    </div>
+  </div>
 }

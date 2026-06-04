@@ -7,5 +7,6 @@ export abstract class ReportRepository {
     abstract update(report: Report): Promise<void>;
     abstract delete(id: string): Promise<void>;
     abstract getPendingReports(): Promise<Report[]>;
+    abstract getPendingDeletions(): Promise<Report[]>;
     abstract updateSyncStatus(id: string, syncStatus: SyncStatus): Promise<void>;
 }

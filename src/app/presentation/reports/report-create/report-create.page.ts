@@ -15,6 +15,8 @@ import {
   IonTextarea,
 } from '@ionic/angular/standalone';
 import { CreateReportUseCase } from 'src/app/domain/use-cases/create-report.use-case';
+import { CustomInputComponent } from '../../shared/components/custom-input/custom-input.component';
+import { CustomTextareaComponent } from '../../shared/components/custom-textarea/custom-textarea.component';
 import { Router } from '@angular/router';
 import { WeatherService } from 'src/app/core/services/weather';
 import { NetworkService } from 'src/app/core/services/network';
@@ -22,7 +24,9 @@ import { Auth } from '@angular/fire/auth';
 import { SyncStatus } from 'src/app/domain/entities/sync-status.enum';
 import { Report } from 'src/app/domain/entities/report.entity';
 import { Geolocation } from '@capacitor/geolocation';
-import { RouterLink } from '@angular/router';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-report-create',
@@ -31,7 +35,6 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [
     IonSkeletonText,
-    IonLabel,
     IonContent,
     IonHeader,
     IonTitle,
@@ -39,11 +42,9 @@ import { RouterLink } from '@angular/router';
     CommonModule,
     ReactiveFormsModule,
     IonBackButton,
-    IonItem,
     IonButton,
-    IonInput,
-    IonTextarea,
-    RouterLink,
+    CustomInputComponent,
+    CustomTextareaComponent,
   ],
 })
 export class ReportCreatePage implements OnInit {
@@ -58,7 +59,8 @@ export class ReportCreatePage implements OnInit {
   isLoadingWeather = signal(false);
   weatherInfo = signal<string | null>(null);
   errorMessage = signal<string | null>(null);
-  photoUrl = signal<string | null>(null);
+  photoLocalPath = signal<string | null>(null); // Ruta nativa guardada en SQLite
+  photoPreview = signal<string | null>(null);   // URL web para mostrar en pantalla
   latitude = signal<number | null>(null);
   longitude = signal<number | null>(null);
 
@@ -79,13 +81,11 @@ export class ReportCreatePage implements OnInit {
       });
       this.latitude.set(coordinates.coords.latitude);
       this.longitude.set(coordinates.coords.longitude);
-      if (this.networkService.online()) {
-        await this.loadWeather();
-      }
     } catch (error) {
       console.error('Error obteniendo ubicación', error);
       this.latitude.set(6.2442);
       this.longitude.set(-75.5812);
+    } finally {
       if (this.networkService.online()) {
         await this.loadWeather();
       }
@@ -107,6 +107,32 @@ export class ReportCreatePage implements OnInit {
     }
   }
 
+  async takePhoto(): Promise<void> {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 80,
+        allowEditing: false,
+        resultType: CameraResultType.Base64,
+        source: CameraSource.Camera,
+      });
+
+      if (image.base64String) {
+        const fileName = `photo_${Date.now()}.jpeg`;
+        const saved = await Filesystem.writeFile({
+          path: fileName,
+          data: image.base64String,
+          directory: Directory.Data,
+        });
+        // URI nativa para guardar en SQLite
+        this.photoLocalPath.set(saved.uri);
+        // URL web para mostrar en el template
+        this.photoPreview.set(Capacitor.convertFileSrc(saved.uri));
+      }
+    } catch (error) {
+      console.error('Error tomando foto', error);
+    }
+  }
+
   async saveReport(): Promise<void> {
     if (this.reportForm.invalid) return;
     this.errorMessage.set(null);
@@ -118,8 +144,8 @@ export class ReportCreatePage implements OnInit {
         crypto.randomUUID(),
         user!.uid,
         title!,
-        description!,
-        this.photoUrl(),
+        description ?? null,
+        this.photoLocalPath(), // Guardamos la ruta local, no la URL de Cloudinary
         this.latitude()!,
         this.longitude()!,
         this.weatherInfo(),

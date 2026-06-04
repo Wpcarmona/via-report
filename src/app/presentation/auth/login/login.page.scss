@@ -1,0 +1,109 @@
+// ── DARK MODE (default) ──────────────────────────────────────────
+.auth-content {
+  --background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 24px 20px;
+}
+
+.brand {
+  text-align: center;
+  margin-bottom: 32px;
+
+  .brand-icon { font-size: 56px; margin-bottom: 8px; }
+
+  .brand-title {
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    letter-spacing: 1px;
+  }
+
+  .brand-subtitle { color: rgba(255, 255, 255, 0.6); font-size: 14px; margin: 0; }
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 28px 24px;
+
+  .card-title { color: #ffffff; font-size: 20px; font-weight: 600; margin: 0 0 24px; text-align: center; }
+}
+
+.error-banner {
+  background: rgba(255, 107, 107, 0.15);
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 16px;
+  color: #ff6b6b;
+  font-size: 13px;
+  text-align: center;
+}
+
+.submit-btn {
+  --background: #4fc3f7;
+  --background-activated: #0288d1;
+  --color: #0f3460;
+  --border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  height: 50px;
+  margin-top: 8px;
+}
+
+.divider { text-align: center; margin: 20px 0 16px; color: rgba(255, 255, 255, 0.4); font-size: 13px; }
+
+.secondary-btn {
+  --border-radius: 12px;
+  --color: #4fc3f7;
+  --border-color: rgba(79, 195, 247, 0.4);
+  font-weight: 600;
+  height: 46px;
+}
+
+
+// ── LIGHT MODE ───────────────────────────────────────────────────
+@media (prefers-color-scheme: light) {
+  .auth-content {
+    --background: linear-gradient(145deg, #dbeeff 0%, #c8e6fb 50%, #b0d9f8 100%);
+  }
+
+  .brand {
+    .brand-title { color: #0f3460; }
+    .brand-subtitle { color: rgba(15, 52, 96, 0.6); }
+  }
+
+  .auth-card {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    box-shadow: 0 8px 32px rgba(15, 52, 96, 0.12);
+
+    .card-title { color: #1c1c1e; }
+  }
+
+  .submit-btn {
+    --background: #0f3460;
+    --background-activated: #16213e;
+    --color: #ffffff;
+  }
+
+  .divider { color: #8e8e93; }
+
+  .secondary-btn {
+    --color: #0f3460;
+    --border-color: rgba(15, 52, 96, 0.4);
+  }
+}

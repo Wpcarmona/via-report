@@ -3,14 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
   IonButton,
   IonInput,
-  IonItem,
 } from '@ionic/angular/standalone';
 import { LoginUseCase } from 'src/app/domain/use-cases/login.use-case';
+import { CustomInputComponent } from '../../shared/components/custom-input/custom-input.component';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
@@ -22,15 +19,11 @@ import { Auth } from '@angular/fire/auth';
   standalone: true,
   imports: [
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     IonButton,
-    IonInput,
-    IonItem,
     CommonModule,
     ReactiveFormsModule,
     RouterLink,
+    CustomInputComponent,
   ],
 })
 export class LoginPage implements OnInit {
