@@ -176,7 +176,7 @@ keytool -genkeypair -v \
   -validity 10000
 ```
 
-Te pedirá contraseña y datos de la organización. **Nunca subas el `.keystore` al repositorio.**
+Se pedirá contraseña y datos de la organización. **Nunca se suba el `.keystore` al repositorio.**
 
 ### 2. Configurar la firma en Android
 
@@ -220,7 +220,7 @@ Súbelo en **Google Play Console → Producción → Crear nueva versión**.
 
 ### Requisitos previos
 
-- Cuenta activa en **Apple Developer Program** (99 USD/año)
+- Se necesita una cuenta activa en **Apple Developer Program** (99 USD/año)
 - **Certificado de distribución** (`iOS Distribution Certificate`) creado en [developer.apple.com](https://developer.apple.com)
 - **Provisioning Profile** de tipo *App Store Distribution* vinculado al Bundle ID de la app
 - App registrada en **App Store Connect**
